@@ -9,11 +9,9 @@ def call() {
                   echo "[warning]  Dependency scan policy violation"
             else
                   echo "No policy violations found in dependencies scan"
-            fi
+            fi          
             '''
-            sh '''
-                  echo "test after fail"
-            '''
-      archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
       }
+      archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
+
 }
