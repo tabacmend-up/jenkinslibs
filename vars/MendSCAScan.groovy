@@ -11,6 +11,6 @@ def call() {
                   echo "No policy violations found in dependencies scan"
             fi
             '''
-            archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
+      archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
       }
 }
