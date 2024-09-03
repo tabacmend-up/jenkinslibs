@@ -4,11 +4,21 @@ def call(boolean Reachability) {
             sh '''
             export repo=$(basename -s .git $(git config --get remote.origin.url))
             export branch=$(git rev-parse --abbrev-ref HEAD)
-            if $Reachability; then
-                  ./mend dep -u -r -s "*//${JOB_NAME}//${repo}_${branch} --fail-policy" --non-interactive --export-results dep-results.txt
-            else
-                   ./mend dep -u -s "*//${JOB_NAME}//${repo}_${branch} --fail-policy" --non-interactive --export-results dep-results.txt
-            fi
+            '''
+            if (Reachability) {
+                  sh('./mend dep -u -r -s "*//${JOB_NAME}//${repo}_${branch}" --fail-policy --non-interactive --export-results dep-results.txt')
+            } else {
+                  sh('./mend dep -u -s "*//${JOB_NAME}//${repo}_${branch}" --fail-policy --non-interactive --export-results dep-results.txt')
+            }
+            sh '''
+            // export repo=$(basename -s .git $(git config --get remote.origin.url))
+            // export branch=$(git rev-parse --abbrev-ref HEAD)
+            // if $Reachability; then
+                  
+            // else
+            //        ./mend dep -u -s "*//${JOB_NAME}//${repo}_${branch} --fail-policy" --non-interactive --export-results dep-results.txt
+            // fi
+            sh '''
             if [[ "$dep_exit" == "9" ]]; then
                   echo "[warning]  Dependency scan policy violation"
             else
