@@ -15,10 +15,10 @@ def call(boolean Reachability) {
             """
         }
         sh """
-        if [[ "\${dep_exit}" == "9" ]]; then
-            echo "[warning]  Dependency scan policy violation"
+        if [[ "$dep_exit" == "9" ]]; then
+              echo "[warning]  Dependency scan policy violation"
         else
-            echo "No policy violations found in dependencies scan"
+              echo "No policy violations found in dependencies scan"
         fi          
         """
     }
