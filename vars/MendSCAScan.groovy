@@ -16,10 +16,10 @@ def call(boolean Reachability) {
         }
         sh """
         if [[ "$?" == "9" ]]; then
-              echo "[warning]  Dependency scan policy violation"
+            echo "[warning]  Dependency scan policy violation"
         else
-              echo "No policy violations found in dependencies scan"
-        fi          
+            echo "No policy violations found in dependencies scan"
+        fi
         """
     }
     archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
