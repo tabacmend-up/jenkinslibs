@@ -4,7 +4,7 @@ def call(boolean Reachability) {
             sh '''
             export repo=$(basename -s .git $(git config --get remote.origin.url))
             export branch=$(git rev-parse --abbrev-ref HEAD)
-            if (Reachability); then
+            if $Reachability; then
                   ./mend dep -u -r -s "*//${JOB_NAME}//${repo}_${branch} --fail-policy" --non-interactive --export-results dep-results.txt
             else
                    ./mend dep -u -s "*//${JOB_NAME}//${repo}_${branch} --fail-policy" --non-interactive --export-results dep-results.txt
