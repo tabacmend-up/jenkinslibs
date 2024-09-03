@@ -6,22 +6,24 @@ def call(boolean Reachability) {
             export repo=\$(basename -s .git \$(git config --get remote.origin.url))
             export branch=\$(git rev-parse --abbrev-ref HEAD)
             ./mend dep -u -r -s "*//\${JOB_NAME}//\${repo}_\${branch}" --fail-policy --non-interactive --export-results dep-results.txt
-            // if [[ "$?" == "9" ]]; then
-            //     echo "[warning]  Dependency scan policy violation"
-            // else
-            //     echo "No policy violations found in dependencies scan"
-            // fi
+            dep_exit=\$?
+            if [[ "\$dep_exit" == "9" ]]; then
+                echo "[warning]  Dependency scan policy violation"
+            else
+                echo "No policy violations found in dependencies scan"
+            fi
             """
         } else {
             sh """
             export repo=\$(basename -s .git \$(git config --get remote.origin.url))
             export branch=\$(git rev-parse --abbrev-ref HEAD)
             ./mend dep -u -s "*//\${JOB_NAME}//\${repo}_\${branch}" --fail-policy --non-interactive --export-results dep-results.txt
-            // if [[ "$?" == "9" ]]; then
-            //     echo "[warning]  Dependency scan policy violation"
-            // else
-            //     echo "No policy violations found in dependencies scan"
-            // fi
+            dep_exit=\$?
+            if [[ "\$dep_exit" == "9" ]]; then
+                echo "[warning]  Dependency scan policy violation"
+            else
+                echo "No policy violations found in dependencies scan"
+            fi
             """
         }
     }
