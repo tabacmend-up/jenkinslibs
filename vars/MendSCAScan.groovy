@@ -1,7 +1,7 @@
-def call(Map args = [:]) { 
+def call(boolean reachability = false) { 
     echo 'Run Mend dependencies scan'
     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-        if (reachability) {
+        if (Reachability) {
             sh """
             export repo=\$(basename -s .git \$(git config --get remote.origin.url))
             export branch=\$(git rev-parse --abbrev-ref HEAD)
