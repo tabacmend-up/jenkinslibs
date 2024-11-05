@@ -31,7 +31,7 @@ pipeline {
         // MEND_SAST_THRESHOLD_LOW = 1
 
         // update with the Server URL found on the integrate tab
-        MEND_URL = 'https://saas.mend.io'
+        MEND_URL = 'https://saas-eu.mend.io'
     }
 
     tools {
@@ -68,7 +68,10 @@ pipeline {
         
         stage('Run Mend SCA') {
             steps {
-               MendSCAScan()
+                echo "Reachability on"
+                MendSCAScan(reachability: true)
+                echo "Reachability off"
+                MendSCAScan(reachability: false)
             }
         }
         stage('Run SCA Reports') {
