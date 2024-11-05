@@ -1,4 +1,4 @@
-def call(boolean reachability = false) { 
+def call(Map args = [:]) { 
     echo 'Run Mend dependencies scan'
     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
         if (reachability) {
