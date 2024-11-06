@@ -3,21 +3,16 @@ def call(Map args = [:]) {
     echo 'Run Mend dependencies scan'
 
     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        // Construct the Mend command based on reachability
+        def reachabilityFlag = reachability ? "-r" : ""
+
+        // Execute the Mend command along with environment setup
         sh """
         export repo=\$(basename -s .git \$(git config --get remote.origin.url))
         export branch=\$(git rev-parse --abbrev-ref HEAD)
-        """
-
-        def mendCommand = "./mend dep -u -s \"*//\${JOB_NAME}//\${repo}_\${branch}\" --fail-policy --non-interactive --export-results dep-results.txt"
         
-        if (reachability) {
-            mendCommand += " -r" // Add reachability flag
-        }
+        ./mend dep -u ${reachabilityFlag} -s "*//\${JOB_NAME}//\${repo}_\${branch}" --fail-policy --non-interactive --export-results dep-results.txt
 
-        // Execute the Mend command
-        sh """
-        ${mendCommand}
-        
         dep_exit=\$?
         if [[ "\$dep_exit" == "9" ]]; then
             echo "[warning] Dependency scan policy violation"
@@ -26,5 +21,7 @@ def call(Map args = [:]) {
         fi
         """
     }
+
+    // Archive the results
     archiveArtifacts artifacts: "dep-results.txt", fingerprint: true
 }
